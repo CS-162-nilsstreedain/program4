@@ -16,6 +16,7 @@
 
 class Linked_List {
 private:
+//public:
 	unsigned int length; // the number of nodes contained in the list
 	Node *head; // a pointer to the first node in the list
 	
@@ -23,9 +24,12 @@ private:
 	
 	Node* findMiddle(Node*); // return node at middle of list
 	void split(Node*, Node**, Node**); // split list into sublists
-	void swapNode(Node**, Node**); // swap node to other list
+	void swapHeadNode(Node**, Node**); // swap node to other list
 	Node* merge(Node*, Node*); // merge method to combine lists
 	void mergesort(Node**); // recursive mergesort method
+
+	void swapNode(Node**, Node*, Node*, Node*);
+	Node* selectionSort(Node*);
 	
 	bool isPrime(int); // returns true if int is prime
 public:

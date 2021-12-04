@@ -77,7 +77,7 @@ void Linked_List::split(Node *currHead, Node **leftList, Node **rightList) {
 }
 
 /*********************************************************************
- ** Function: swapNode()
+ ** Function: swapHeadNode()
  ** Description: Swaps the Node at the front of from with the node at the front of to, while all to Nodes follow the new to front Node
  * Ex. 	Before:	to = {1, 2, 3}, from = {4, 5, 6}
  * 		After:		to = {4, 1, 2, 3}, from = {5, 6}
@@ -87,7 +87,7 @@ void Linked_List::split(Node *currHead, Node **leftList, Node **rightList) {
  *********************************************************************/
 // Ex. 	Before: to = {1, 2, 3}, from = {4, 5, 6}
 //		After:  to = (4, 1, 2, 3}, from = {5, 6}
-void Linked_List::swapNode(Node **to, Node **from) {
+void Linked_List::swapHeadNode(Node **to, Node **from) {
 	Node* node = *from;
 	if (node == NULL)
 		throw std::out_of_range("Index out of bounds.");
@@ -135,9 +135,9 @@ Node* Linked_List::merge(Node *leftList, Node *rightList) {
 			break;
 		}
 		if (leftList->val <= rightList->val)
-			swapNode(&(currHead->next), &leftList);
+			swapHeadNode(&(currHead->next), &leftList);
 		else
-			swapNode(&(currHead->next), &rightList);
+			swapHeadNode(&(currHead->next), &rightList);
 		currHead = currHead->next;
 	}
 	return sortedList.next;
@@ -288,6 +288,41 @@ void Linked_List::sort_ascending() {
 	mergesort(&head);
 }
 
+void Linked_List::swapNode(Node **currHead, Node *one, Node *two, Node* twoPrev) {
+	*currHead = two;
+	
+	twoPrev->next = one;
+	
+	Node* temp = two->next;
+	two->next = one->next;
+	one->next = temp;
+}
+
+Node* Linked_List::selectionSort(Node *currHead) {
+	if (currHead->next == NULL)
+		return currHead;
+	
+	Node* currMax = currHead;
+	
+	Node* maxPrev = NULL;
+	Node* temp = currHead;
+	
+	while (temp->next != NULL) {
+		if (temp->next->val > currMax->val) {
+			currMax = temp->next;
+			maxPrev = temp;
+		}
+		temp = temp->next;
+	}
+	
+	if (currMax != currHead)
+		swapNode(&currHead, currHead, currMax, maxPrev);
+	
+	currHead->next = selectionSort(currHead->next);
+	
+	return currHead;
+}
+
 /*********************************************************************
  ** Function: sort_descending()
  ** Description: Sorts the linked list in an descending pattern
@@ -296,7 +331,10 @@ void Linked_List::sort_ascending() {
  ** Post-Conditions: The linked list will be sorted in descending pattern
  *********************************************************************/
 void Linked_List::sort_descending() {
+	if (head == NULL)
+		return;
 	
+	head = selectionSort(head);
 }
 
 /*********************************************************************

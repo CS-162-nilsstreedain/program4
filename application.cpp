@@ -74,7 +74,7 @@ int main(int argc, const char * argv[]) {
 		// Get & print count of prime nums in list
 		int numPrimes = list.getNumPrimes();
 		std::cout << "You have " << numPrimes << " prime number(s) in your list." << std::endl;
-		
+
 		// Do again? based on user input
 		doAgain = boolFromUser("Do you want to do this again (y or n)?", 'y', 'n');
 	}
