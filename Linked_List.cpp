@@ -50,9 +50,9 @@ Node* Linked_List::findMiddle(Node *currHead) {
 	Node *toMiddle = currHead;
 	Node *toRight = currHead->next;
 	
-	while (toRight != NULL) {
+	while (toRight) {
 		toRight = toRight->next;
-		if (toRight != NULL) {
+		if (toRight) {
 			toRight = toRight->next;
 			toMiddle = toMiddle->next;
 		}
@@ -89,7 +89,7 @@ void Linked_List::split(Node *currHead, Node **leftList, Node **rightList) {
 //		After:  to = (4, 1, 2, 3}, from = {5, 6}
 void Linked_List::swapHeadNode(Node **to, Node **from) {
 	Node* node = *from;
-	if (node == NULL)
+	if (!node)
 		throw std::out_of_range("Index out of bounds.");
 	
 	*from = node->next;
@@ -108,9 +108,9 @@ Node* Linked_List::merge(Node *leftList, Node *rightList) {
 	// Recursive merge function
 //	Node* sortedList = NULL;
 //
-//	if (leftList == NULL)
+//	if (!leftList)
 //		return rightList;
-//	else if (rightList == NULL)
+//	else if (!rightList)
 //		return leftList;
 //
 //	if (leftList->val <= rightList->val) {
@@ -127,10 +127,10 @@ Node* Linked_List::merge(Node *leftList, Node *rightList) {
 	Node* currHead = &sortedList;
 
 	while (true) {
-		if (leftList == NULL) {
+		if (!leftList) {
 			currHead->next = rightList;
 			break;
-		} else if (rightList == NULL) {
+		} else if (!rightList) {
 			currHead->next = leftList;
 			break;
 		}
@@ -152,7 +152,7 @@ Node* Linked_List::merge(Node *leftList, Node *rightList) {
  *********************************************************************/
 void Linked_List::mergesort(Node **start) {
 	Node* currHead = *start;
-	if (currHead == NULL || currHead->next == NULL)
+	if (!currHead || !(currHead->next))
 		return;
 	
 	// Sublists for currHead to be split into
@@ -168,6 +168,60 @@ void Linked_List::mergesort(Node **start) {
 	
 	// combines left & right back to start pointer
 	*start = merge(leftList, rightList);
+}
+
+/*********************************************************************
+ ** Function: swapNode()
+ ** Description: Function for swapping nodes in a linked list using pointers
+ ** Parameters: Node **currHead, Node *one, Node *two, Node* twoPrev
+ ** Pre-Conditions: currHead, one, two & twoPrev must be provided
+ ** Post-Conditions: The nodes one & two will be swapped in the linked list
+ *********************************************************************/
+void Linked_List::swapNode(Node **currHead, Node *one, Node *two, Node* twoPrev) {
+	*currHead = two;
+	
+	twoPrev->next = one;
+	
+	Node* temp = two->next;
+	two->next = one->next;
+	one->next = temp;
+}
+
+/*********************************************************************
+ ** Function: selectionSort()
+ ** Description: Recursive selectionsort function for a list from a given Node pointer
+ ** Parameters: Node **currHead
+ ** Pre-Conditions: currHead must be provided
+ ** Post-Conditions: The list starting at currHead will be sorted recursively
+ *********************************************************************/
+Node* Linked_List::selectionSort(Node *currHead) {
+	// When base case is reached, head is returned
+	if (!(currHead->next))
+		return currHead;
+	
+	// Set curMac minimum for this recursion
+	Node* currMax = currHead;
+	// Keeps track of pointer to currMax so it can be swapped later
+	Node* maxPrev = NULL;
+	
+	// Iterate through the list to find max node
+	Node* temp = currHead;
+	while (temp->next) {
+		if (temp->next->val > currMax->val) {
+			currMax = temp->next;
+			maxPrev = temp;
+		}
+		temp = temp->next;
+	}
+	
+	// If the max is not the already sorted head, swap the head & max
+	if (currMax != currHead)
+		swapNode(&currHead, currHead, currMax, maxPrev);
+	
+	// Run again on next node
+	currHead->next = selectionSort(currHead->next);
+	
+	return currHead;
 }
 
 /*********************************************************************
@@ -288,41 +342,6 @@ void Linked_List::sort_ascending() {
 	mergesort(&head);
 }
 
-void Linked_List::swapNode(Node **currHead, Node *one, Node *two, Node* twoPrev) {
-	*currHead = two;
-	
-	twoPrev->next = one;
-	
-	Node* temp = two->next;
-	two->next = one->next;
-	one->next = temp;
-}
-
-Node* Linked_List::selectionSort(Node *currHead) {
-	if (currHead->next == NULL)
-		return currHead;
-	
-	Node* currMax = currHead;
-	
-	Node* maxPrev = NULL;
-	Node* temp = currHead;
-	
-	while (temp->next != NULL) {
-		if (temp->next->val > currMax->val) {
-			currMax = temp->next;
-			maxPrev = temp;
-		}
-		temp = temp->next;
-	}
-	
-	if (currMax != currHead)
-		swapNode(&currHead, currHead, currMax, maxPrev);
-	
-	currHead->next = selectionSort(currHead->next);
-	
-	return currHead;
-}
-
 /*********************************************************************
  ** Function: sort_descending()
  ** Description: Sorts the linked list in an descending pattern
@@ -331,7 +350,7 @@ Node* Linked_List::selectionSort(Node *currHead) {
  ** Post-Conditions: The linked list will be sorted in descending pattern
  *********************************************************************/
 void Linked_List::sort_descending() {
-	if (head == NULL)
+	if (!head)
 		return;
 	
 	head = selectionSort(head);
