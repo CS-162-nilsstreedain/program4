@@ -13,7 +13,6 @@
 
 class Linked_List {
 private:
-//public:
 	unsigned int length; // the number of nodes contained in the list
 	Node *head; // a pointer to the first node in the list
 	
@@ -23,6 +22,8 @@ private:
 	void swapNode(Node**, Node**);
 	Node* merge(Node*, Node*);
 	void mergesort(Node**);
+	
+	bool isPrime(int);
 public:
 	Linked_List();
 	int get_length();
@@ -36,6 +37,8 @@ public:
 	// Note: it's okay if sort_ascending() calls a recursive private function to perform the sorting.
 	void sort_descending(); // sort the nodes in descending order
 	// you can add extra member variables or functions as desired
+	
+	int getNumPrimes();
 };
 
 #endif /* Linked_List_h */

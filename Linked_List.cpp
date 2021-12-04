@@ -107,6 +107,17 @@ void Linked_List::mergesort(Node **start) {
 	*start = merge(leftList, rightList);
 }
 
+bool Linked_List::isPrime(int x) {
+	// Remove case where 1 returns true
+	if (x < 2)
+		return false;
+	
+	for (int i = 2; i <= x / 2; i++)
+		if (x%i == 0)
+			return false;
+	return true;
+}
+
 int Linked_List::get_length() {
 	return length;
 }
@@ -160,4 +171,16 @@ void Linked_List::sort_ascending() {
 
 void Linked_List::sort_descending() {
 	
+}
+
+int Linked_List::getNumPrimes() {
+	Node *currNode = head;
+	int numPrimes = 0;
+	for (int i = 0; i < length; i++) {
+		if (isPrime(currNode->val))
+			numPrimes++;
+		currNode = currNode->next;
+	}
+	
+	return numPrimes;
 }
