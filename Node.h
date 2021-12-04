@@ -1,9 +1,11 @@
-//
-//  Node.h
-//  Program 4
-//
-//  Created by Nils Streedain on 12/1/21.
-//
+/******************************************************
+** Program: Node.h
+** Author: Nils Streedain
+** Date: 12/1/2021
+** Description: Node object header file
+** Input: N/A
+** Output: N/A
+******************************************************/
 
 #ifndef Node_h
 #define Node_h

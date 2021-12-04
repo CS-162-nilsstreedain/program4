@@ -1,17 +1,37 @@
-//
-//  Linked_List.cpp
-//  Program 4
-//
-//  Created by Nils Streedain on 12/1/21.
-//
+/******************************************************
+** Program: Linked_List.cpp
+** Author: Nils Streedain
+** Date: 12/1/2021
+** Description: Linked_List class implementation file
+** Input: N/A
+** Output: N/A
+******************************************************/
 
 #include "Linked_List.h"
 
+/*********************************************************************
+ ** Function: Linked_List()
+ ** Description: Constructor for the Linked_List class
+ ** Parameters: N/A
+ ** Pre-Conditions: N/A
+ ** Post-Conditions: An empty linked list will be created.
+ *********************************************************************/
 Linked_List::Linked_List() {
 	length = 0;
 	head = NULL;
 }
 
+Linked_List::~Linked_List() {
+	clear();
+}
+
+/*********************************************************************
+ ** Function: nodeAt()
+ ** Description: Returns the Node pointer at a specified index
+ ** Parameters: unsigned int index
+ ** Pre-Conditions: index must be provided
+ ** Post-Conditions: The Node at index will be returned
+ *********************************************************************/
 Node* Linked_List::nodeAt(unsigned int index) {
 	Node *currNode = head;
 	for (int i = 0; i < index; i++)
@@ -19,6 +39,13 @@ Node* Linked_List::nodeAt(unsigned int index) {
 	return currNode;
 }
 
+/*********************************************************************
+ ** Function: findMiddle()
+ ** Description: Returns the Node pointer at the middle of the list
+ ** Parameters: Node *currHead
+ ** Pre-Conditions: currHead must be provided
+ ** Post-Conditions: The middle Node pointer will be returned
+ *********************************************************************/
 Node* Linked_List::findMiddle(Node *currHead) {
 	Node *toMiddle = currHead;
 	Node *toRight = currHead->next;
@@ -34,6 +61,13 @@ Node* Linked_List::findMiddle(Node *currHead) {
 	return toMiddle;
 }
 
+/*********************************************************************
+ ** Function: split()
+ ** Description: Splits the currHead list and puts each half in the leftList and rightList
+ ** Parameters: Node *currHead, Node **leftList, Node **rightList
+ ** Pre-Conditions: currHead, leftList, & rightList must be provided
+ ** Post-Conditions: The currHead list will be split in half between leftList & rightList
+ *********************************************************************/
 void Linked_List::split(Node *currHead, Node **leftList, Node **rightList) {
 	Node *mid = findMiddle(currHead);
 	
@@ -42,6 +76,17 @@ void Linked_List::split(Node *currHead, Node **leftList, Node **rightList) {
 	mid->next = NULL;
 }
 
+/*********************************************************************
+ ** Function: swapNode()
+ ** Description: Swaps the Node at the front of from with the node at the front of to, while all to Nodes follow the new to front Node
+ * Ex. 	Before:	to = {1, 2, 3}, from = {4, 5, 6}
+ * 		After:		to = {4, 1, 2, 3}, from = {5, 6}
+ ** Parameters: Node **to, Node **from
+ ** Pre-Conditions: currHead, leftList, & rightList must be provided
+ ** Post-Conditions: The currHead list will be split in half between leftList & rightList
+ *********************************************************************/
+// Ex. 	Before: to = {1, 2, 3}, from = {4, 5, 6}
+//		After:  to = (4, 1, 2, 3}, from = {5, 6}
 void Linked_List::swapNode(Node **to, Node **from) {
 	Node* node = *from;
 	if (node == NULL)
@@ -52,6 +97,13 @@ void Linked_List::swapNode(Node **to, Node **from) {
 	*to = node;
 }
 
+/*********************************************************************
+ ** Function: merge()
+ ** Description: Merges leftList with rightList, prioritizing by value, and returns final list
+ ** Parameters: Node *leftList, Node *rightList
+ ** Pre-Conditions: leftList & rightList must be provided
+ ** Post-Conditions: A merged leftList & rightList will be returned
+ *********************************************************************/
 Node* Linked_List::merge(Node *leftList, Node *rightList) {
 	// Recursive merge function
 //	Node* sortedList = NULL;
@@ -91,22 +143,40 @@ Node* Linked_List::merge(Node *leftList, Node *rightList) {
 	return sortedList.next;
 }
 
+/*********************************************************************
+ ** Function: mergesort()
+ ** Description: Recursive mergesort function for a list from a given Node pointer
+ ** Parameters: Node **start
+ ** Pre-Conditions: start must be provided
+ ** Post-Conditions: The list starting at start will be sorted recursively
+ *********************************************************************/
 void Linked_List::mergesort(Node **start) {
 	Node* currHead = *start;
 	if (currHead == NULL || currHead->next == NULL)
 		return;
 	
+	// Sublists for currHead to be split into
 	Node* leftList;
 	Node* rightList;
 	
+	// Splits currHead into left & right
 	split(currHead, &leftList, &rightList);
 	
+	// Sorts left & right seprately
 	mergesort(&leftList);
 	mergesort(&rightList);
 	
+	// combines left & right back to start pointer
 	*start = merge(leftList, rightList);
 }
 
+/*********************************************************************
+ ** Function: isPrime()
+ ** Description: Returns true if x is prime, false otherwise
+ ** Parameters: int x
+ ** Pre-Conditions: x must be provided
+ ** Post-Conditions: True will be returned if x is prime
+ *********************************************************************/
 bool Linked_List::isPrime(int x) {
 	// Remove case where 1 returns true
 	if (x < 2)
@@ -118,10 +188,24 @@ bool Linked_List::isPrime(int x) {
 	return true;
 }
 
+/*********************************************************************
+ ** Function: get_length()
+ ** Description: Returns the length of the linked list
+ ** Parameters: N/A
+ ** Pre-Conditions: N/A
+ ** Post-Conditions: The length will be returned
+ *********************************************************************/
 int Linked_List::get_length() {
 	return length;
 }
 
+/*********************************************************************
+ ** Function: print()
+ ** Description: Prints the linked list to the command line
+ ** Parameters: N/A
+ ** Pre-Conditions: N/A
+ ** Post-Conditions: The linked list will be printed to the command line
+ *********************************************************************/
 void Linked_List::print() {
 	Node *currNode = head;
 	for (int i = 0; i < length; i++) {
@@ -131,6 +215,13 @@ void Linked_List::print() {
 	std::cout << std::endl;
 }
 
+/*********************************************************************
+ ** Function: clear()
+ ** Description: Deletes each node of the list, emptying the list
+ ** Parameters: N/A
+ ** Pre-Conditions: N/A
+ ** Post-Conditions: The list will be cleared
+ *********************************************************************/
 void Linked_List::clear() {
 	Node *currNode;
 	for (int i = 0; i < length; i++) {
@@ -142,11 +233,25 @@ void Linked_List::clear() {
 	length = 0;
 }
 
+/*********************************************************************
+ ** Function: push_front()
+ ** Description: Adds a new node containing val to the front of the linked list & returns new length
+ ** Parameters: int val
+ ** Pre-Conditions: val must be provided
+ ** Post-Conditions: A node containing val will be added to front of list and the new length will be returned
+ *********************************************************************/
 unsigned int Linked_List::push_front(int val) {
 	head = new Node(val, head);
 	return ++length;
 }
 
+/*********************************************************************
+ ** Function: push_back()
+ ** Description: Adds a new node containing val to the back of the linked list & returns new length
+ ** Parameters: int val
+ ** Pre-Conditions: val must be provided
+ ** Post-Conditions: A node containing val will be added to back of list and the new length will be returned
+ *********************************************************************/
 unsigned int Linked_List::push_back(int val) {
 	if (length == 0)
 		return push_front(val);
@@ -154,6 +259,13 @@ unsigned int Linked_List::push_back(int val) {
 	return ++length;
 }
 
+/*********************************************************************
+ ** Function: push_back()
+ ** Description: Adds a new node containing val to the inked list at index, index & returns new length
+ ** Parameters: int val, unsigned int index
+ ** Pre-Conditions: val & index must be provided
+ ** Post-Conditions: A node containing val will be added to index, index of list and the new length will be returned
+ *********************************************************************/
 unsigned int Linked_List::insert(int val, unsigned int index) {
 	if (index > length)
 		throw std::out_of_range("Index out of bounds.");
@@ -165,14 +277,35 @@ unsigned int Linked_List::insert(int val, unsigned int index) {
 	return ++length;
 }
 
+/*********************************************************************
+ ** Function: sort_ascending()
+ ** Description: Sorts the linked list in an ascending pattern with a recursive mergesort function
+ ** Parameters: N/A
+ ** Pre-Conditions: N/A
+ ** Post-Conditions: The linked list will be sorted in ascending pattern
+ *********************************************************************/
 void Linked_List::sort_ascending() {
 	mergesort(&head);
 }
 
+/*********************************************************************
+ ** Function: sort_descending()
+ ** Description: Sorts the linked list in an descending pattern
+ ** Parameters: N/A
+ ** Pre-Conditions: N/A
+ ** Post-Conditions: The linked list will be sorted in descending pattern
+ *********************************************************************/
 void Linked_List::sort_descending() {
 	
 }
 
+/*********************************************************************
+ ** Function: getNumPrimes()
+ ** Description: Returns the number of prime numbers in the linked list
+ ** Parameters: N/A
+ ** Pre-Conditions: N/A
+ ** Post-Conditions: The number of prime number in the linked list will be returned
+ *********************************************************************/
 int Linked_List::getNumPrimes() {
 	Node *currNode = head;
 	int numPrimes = 0;
