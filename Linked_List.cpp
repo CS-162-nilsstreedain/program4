@@ -86,7 +86,7 @@ void Linked_List::split(Node *currHead, Node **leftList, Node **rightList) {
  ** Post-Conditions: The currHead list will be split in half between leftList & rightList
  *********************************************************************/
 // Ex. 	Before: to = {1, 2, 3}, from = {4, 5, 6}
-//		After:  to = (4, 1, 2, 3}, from = {5, 6}
+//		After:  to = {4, 1, 2, 3}, from = {5, 6}
 void Linked_List::swapHeadNode(Node **to, Node **from) {
 	Node* node = *from;
 	if (!node)
@@ -179,7 +179,6 @@ void Linked_List::mergesort(Node **start) {
  *********************************************************************/
 void Linked_List::swapNode(Node **currHead, Node *one, Node *two, Node* twoPrev) {
 	*currHead = two;
-	
 	twoPrev->next = one;
 	
 	Node* temp = two->next;
@@ -199,7 +198,7 @@ Node* Linked_List::selectionSort(Node *currHead) {
 	if (!(currHead->next))
 		return currHead;
 	
-	// Set curMac minimum for this recursion
+	// Set curMax minimum for this recursion
 	Node* currMax = currHead;
 	// Keeps track of pointer to currMax so it can be swapped later
 	Node* maxPrev = NULL;
